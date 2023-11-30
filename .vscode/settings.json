@@ -1,6 +1,6 @@
 {
     "discord.smallImage": "Code",
-    "discord.removeTimestamp": true,
+    "discord.removeTimestamp": false,
     "discord.removeRemoteRepository": true,
     "discord.removeLowerDetails": true
 }

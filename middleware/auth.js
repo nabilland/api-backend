@@ -1,4 +1,4 @@
-// middleware/users.js
+// middleware/auth.js
 
 const jwt = require("jsonwebtoken");
 const db = require("../lib/db.js");
@@ -78,8 +78,32 @@ module.exports = {
             error: 'An internal server error occurred',
           });
         });
+    },
+    
+    userAuthorization: (requiredRole) => (req, res, next) => {
+      try {
+        const authHeader = req.headers.authorization;
+        if(!authHeader || !authHeader.startsWith('Bearer ')) {
+          return res.status(401).send({
+            message: 'Unauthorized. Please provide a valid token.',
+          });
+        }
+        const token = authHeader.split(' ')[1];
+        const decoded = jwt.verify(token, 'SECRETKEY');
+        const userRole = decoded.role;
+        if(userRole !== requiredRole) {
+          return res.status(403).send({
+            message: 'Forbidden. You do not have permission to access this resource.',
+          });
+        }
+        req.userData = decoded;
+        next();
+      } catch(err) {
+        return res.status(401).send({
+          message: 'Unauthorized. Please provide a valid token.',
+        });
+      }
     }
-        
 };
 
 function isEmailValid(email){
