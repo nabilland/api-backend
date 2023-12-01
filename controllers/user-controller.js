@@ -1,4 +1,4 @@
-// controllers/users.js
+// controllers/user-controller.js
 
 const db = require('../lib/db.js');
 
@@ -22,8 +22,7 @@ module.exports = {
                 email: userProfile.email,
                 phone: userProfile.phone,
                 role: userProfile.role,
-                fname: userProfile.fname,
-                lname: userProfile.lname,
+                name: userProfile.name,
             };
             res.status(200).json(sanitizedProfile);
         });
@@ -31,11 +30,11 @@ module.exports = {
 
     updateUserProfile: (req, res) => {
         const userId = req.params.id;
-        const { phone, fname, lname } = req.body;
+        const { phone, name } = req.body;
 
-        const updateQuery = `UPDATE users SET phone = ?, fname = ?, lname = ? WHERE id = ?`;
+        const updateQuery = `UPDATE users SET phone = ?, name = ? WHERE id = ?`;
 
-        db.query(updateQuery, [phone, fname, lname, userId], (error) => {
+        db.query(updateQuery, [phone, name, userId], (error) => {
             if(error) {
                 console.error('Error updating user profile:', error);
                 return res.status(500).json({

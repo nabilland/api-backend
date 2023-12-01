@@ -1,4 +1,4 @@
-// controllers/contents.js
+// controllers/content-controller.js
 
 const db = require('../lib/db.js');
 

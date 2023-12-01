@@ -1,4 +1,4 @@
-// middleware/auth.js
+// middleware/auth-middleware.js
 
 const jwt = require("jsonwebtoken");
 const db = require("../lib/db.js");

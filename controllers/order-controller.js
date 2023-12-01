@@ -1,4 +1,4 @@
-// controllers/orders.js
+// controllers/order-controller.js
 
 const db = require('../lib/db.js');
 

@@ -1,4 +1,4 @@
-// controllers/collectors.js
+// controllers/collector-controller.js
 
 const db = require('../lib/db.js');
 
@@ -22,8 +22,7 @@ module.exports = {
                 email: collectorProfile.email,
                 phone: collectorProfile.phone,
                 role: collectorProfile.role,
-                fname: collectorProfile.fname,
-                lname: collectorProfile.lname,
+                name: collectorProfile.name,
             };
             res.status(200).json(sanitizedProfile);
         });
@@ -31,11 +30,11 @@ module.exports = {
 
     updateCollectorProfile: (req, res) => {
         const userId = req.params.id;
-        const { phone, fname, lname } = req.body;
+        const { phone, name } = req.body;
 
-        const updateQuery = `UPDATE users SET phone = ?, fname = ?, lname = ? WHERE id = ?`;
+        const updateQuery = `UPDATE users SET phone = ?, name = ? WHERE id = ?`;
 
-        db.query(updateQuery, [phone, fname, lname, userId], (error) => {
+        db.query(updateQuery, [phone, name, userId], (error) => {
             if(error) {
                 console.error('Error updating collector profile:', error);
                 return res.status(500).json({
@@ -147,8 +146,7 @@ module.exports = {
                 email: collector.email,
                 phone: collector.phone,
                 user_role: collector.user_role,
-                fname: collector.fname,
-                lname: collector.lname,
+                name: collector.name,
                 drop_latitude: collector.drop_latitude,
                 drop_longitude: collector.drop_longitude,
             }));

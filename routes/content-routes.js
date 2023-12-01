@@ -1,4 +1,4 @@
-// routes/collector-routes.js
+// routes/content-routes.js
 
 const express = require('express');
 const router = express.Router();
