@@ -19,7 +19,7 @@ module.exports = {
         });
     },
 
-    showContent: (req, res) => {
+    getContent: (req, res) => {
         const getAllContentQuery = `SELECT * FROM contents`;
         
         db.query(getAllContentQuery, (error, results) => {
@@ -43,11 +43,11 @@ module.exports = {
         });
     },
 
-    showContentById: (req, res) => {
-        const { content_id } = req.body;
+    getContentById: (req, res) => {
+        const contentId = req.params.id;
         const getAllContentQuery = `SELECT * FROM contents where id = ?`;
         
-        db.query(getAllContentQuery, [content_id], (error, results) => {
+        db.query(getAllContentQuery, [contentId], (error, results) => {
             if (error) {
                 console.error('Error retrieving all contents data:', error);
                 return res.status(500).json({
@@ -69,11 +69,12 @@ module.exports = {
     },
 
     updateContentById: (req, res) => {
-        const { content_id, content_title, content_text } = req.body;
+        const contentId = req.params.id
+        const { content_title, content_text } = req.body;
         
         const updateQuery = `UPDATE contents SET content_title = ?, content_text = ? WHERE id = ?`;
 
-        db.query(updateQuery, [content_title, content_text, content_id], (error) => {
+        db.query(updateQuery, [content_title, content_text, contentId], (error) => {
             if(error) {
                 console.error('Error updating content:', error);
                 return res.status(500).json({
@@ -87,11 +88,11 @@ module.exports = {
     },
 
     deleteContentById: (req, res) => {
-        const { content_id } = req.body;
+        const contentId = req.params.id;
 
         const deleteQuery = `DELETE FROM contents WHERE id = ?`;
 
-        db.query(deleteQuery, [content_id], (error, result) => {
+        db.query(deleteQuery, [contentId], (error, result) => {
             if (error) {
                 console.error('Error deleting content:', error);
                 return res.status(500).json({

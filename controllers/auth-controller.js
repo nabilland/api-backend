@@ -1,7 +1,7 @@
 const db = require('../lib/db.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const userMiddleware = require('../middleware/authMiddleware.js');
+const userMiddleware = require('../middleware/auth-middleware.js');
 
 module.exports = {
     registerUser: (req, res, next) => {

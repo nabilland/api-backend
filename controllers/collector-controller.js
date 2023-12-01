@@ -4,7 +4,7 @@ const db = require('../lib/db.js');
 
 module.exports = {
     getCollectorProfile: (req, res) => {
-        const { userId } = req.userData;
+        const userId  = req.params.id;
 
         const selectQuery = `SELECT * FROM users WHERE id = ?`;
         
@@ -30,7 +30,7 @@ module.exports = {
     },
 
     updateCollectorProfile: (req, res) => {
-        const { userId } = req.userData;
+        const userId = req.params.id;
         const { phone, fname, lname } = req.body;
 
         const updateQuery = `UPDATE users SET phone = ?, fname = ?, lname = ? WHERE id = ?`;
@@ -49,7 +49,7 @@ module.exports = {
     },
 
     updateDropLocation: (req, res) => {
-        const { userId } = req.userData;
+        const userId = req.params.id;
         const { drop_latitude, drop_longitude } = req.body;
 
         // Check if data for the user already exists in collectors table
@@ -94,7 +94,7 @@ module.exports = {
     },
 
     updateCurrentLocation: (req, res) => {
-        const { userId } = req.userData;
+        const userId = req.params.id;
         const { current_latitude, current_longitude } = req.body;
 
         // Check if data for the user already exists in collectors table
@@ -141,6 +141,7 @@ module.exports = {
                 })
             }
             const allCollectorsData = results.map(collector => ({
+                collector_id: collector.id,
                 user_id: collector.user_id,
                 username: collector.username,
                 email: collector.email,

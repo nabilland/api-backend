@@ -3,8 +3,8 @@
 const db = require('../lib/db.js');
 
 module.exports = {
-    getUserProfile: (req, res) => {
-        const { userId } = req.userData;
+    getUserProfileById: (req, res) => {
+        const  userId  = req.params.id;
     
         const selectQuery = `SELECT * FROM users WHERE id = ?`;
         db.query(selectQuery, [userId], (error, results) => {
@@ -30,7 +30,7 @@ module.exports = {
     },
 
     updateUserProfile: (req, res) => {
-        const { userId } = req.userData;
+        const userId = req.params.id;
         const { phone, fname, lname } = req.body;
 
         const updateQuery = `UPDATE users SET phone = ?, fname = ?, lname = ? WHERE id = ?`;
