@@ -3,6 +3,8 @@
 const db = require('../lib/db.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const uuid = require('uuid');
+
 const userMiddleware = require('../middleware/auth-middleware.js');
 
 module.exports = {
@@ -31,7 +33,7 @@ module.exports = {
                             });
                         } else {
                             db.query(
-                                'INSERT INTO users (id, username, email, password, phone, role, name, registered) VALUES (?, ?, ?, ?, ?, ?, ?, ?, now());',
+                                'INSERT INTO users (id, username, email, password, phone, role, name, registered) VALUES (?, ?, ?, ?, ?, ?, ?, now());',
                                 [uuid.v4(), req.body.username, req.body.email, hash, req.body.phone, req.body.role, req.body.name],
                                 (err, result) => {
                                     if (err) {
