@@ -31,8 +31,8 @@ module.exports = {
                             });
                         } else {
                             db.query(
-                                'INSERT INTO users (id, username, email, password, phone, role, fname, lname, registered) VALUES (?, ?, ?, ?, ?, ?, ?, ?, now());',
-                                [uuid.v4(), req.body.username, req.body.email, hash, req.body.phone, req.body.role, req.body.fname, req.body.lname],
+                                'INSERT INTO users (id, username, email, password, phone, role, name, registered) VALUES (?, ?, ?, ?, ?, ?, ?, ?, now());',
+                                [uuid.v4(), req.body.username, req.body.email, hash, req.body.phone, req.body.role, req.body.name],
                                 (err, result) => {
                                     if (err) {
                                         return res.status(400).send({
