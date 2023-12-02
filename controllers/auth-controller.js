@@ -9,6 +9,7 @@ const userMiddleware = require('../middleware/auth-middleware.js');
 
 module.exports = {
     registerUser: (req, res, next) => {
+        const role = req.body.role || 'user';
         db.query(
             'SELECT id FROM users WHERE LOWER(username) = LOWER(?) OR LOWER(email) = LOWER(?)',
             [req.body.username, req.body.email],
@@ -34,7 +35,53 @@ module.exports = {
                         } else {
                             db.query(
                                 'INSERT INTO users (id, username, email, password, phone, role, name, registered) VALUES (?, ?, ?, ?, ?, ?, ?, now());',
-                                [uuid.v4(), req.body.username, req.body.email, hash, req.body.phone, req.body.role, req.body.name],
+                                [uuid.v4(), req.body.username, req.body.email, hash, req.body.phone, role, req.body.name],
+                                (err, result) => {
+                                    if (err) {
+                                        return res.status(400).send({
+                                            message: err,
+                                        });
+                                    }
+                                    return res.status(201).send({
+                                        message: 'Registered!',
+                                    });
+                                }
+                            );
+                        }
+                    });
+                }
+            }
+        );
+    },
+
+    registerCollector: (req, res, next) => {
+        const role = req.body.role || 'collector';
+        db.query(
+            'SELECT id FROM users WHERE LOWER(username) = LOWER(?) OR LOWER(email) = LOWER(?)',
+            [req.body.username, req.body.email],
+            (err, result) => {
+                // handle query error
+                if (err) {
+                    return res.status(500).send({
+                        message: err,
+                    });
+                }
+                // check if username or email already exists
+                if (result && result.length) {
+                    return res.status(409).send({
+                        message: 'Username or email already in use!',
+                    });
+                } else {
+                    // username or email not in use
+                    bcrypt.hash(req.body.password, 10, (err, hash) => {
+                        if (err) {
+                            return res.status(500).send({
+                                message: err,
+                            });
+                        } else {
+                            db.query(
+                                'INSERT INTO users (id, username, email, password, phone, role, name, registered) VALUES (?, ?, ?, ?, ?, ?, ?, now());',
+                                [uuid.v4(), req.body.username, req.body.email, hash, req.body.phone, role, req.body.name],
                                 (err, result) => {
                                     if (err) {
                                         return res.status(400).send({

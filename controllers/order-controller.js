@@ -30,19 +30,19 @@ module.exports = {
     },
 
     getOrderDetail: (req, res) => {
-        const userId = req.params.id;
+        const orderId = req.params.id;
 
-        if(!userId){
+        if(!orderId){
             return res.status(400).json({
-                error: 'Bad request: Missing user ID',
+                error: 'Bad request: Missing order ID',
             });
         }
 
-        const getUserOrder = `SELECT * FROM orders WHERE user_id = ?`;
+        const getUserOrder = `SELECT * FROM orders WHERE id = ?`;
             
-        db.query(getUserOrder, [userId], (error, results) => {
+        db.query(getUserOrder, [orderId], (error, results) => {
             if (error) {
-                console.error('Error retrieving user order data:', error);
+                console.error('Error retrieving order data:', error);
                 return res.status(500).json({
                     error: 'An internal server error occured',
                 });

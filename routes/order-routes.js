@@ -10,16 +10,16 @@ const collectorController = require('../controllers/collector-controller.js');
 const orderController = require('../controllers/order-controller.js');
 const contentController = require('../controllers/content-controller.js');
 
-// Route to create order details by ID (userId)
+// Route to get order with 'pick_up' status
+router.get('/pickup', userMiddleware.userAuthorization('collector'), orderController.getAllOrderData);
+
+// Route to create order by ID (userId)
 router.post('/create/:id', userMiddleware.userAuthorization('user'), orderController.createOrder); //userId
-// Route to show order details by ID (userId)
-router.get('/:id', userMiddleware.userAuthorization('user'), orderController.getOrderDetail); //userId
+// Route to get all order data by ID (userId)
+router.get('/:id', orderController.getOrderDetail); //orderId
 // Route to update order status by ID (orderId)
 router.put('/update-status/:id', userMiddleware.userAuthorization('collector'), orderController.updateOrderStatus); //orderId
-// Route to show order history
-router.get('/history', userMiddleware.userAuthorization('user'), orderController.getOrderHistory);
-
-// Route to get order data
-router.get('/all', orderController.getOrderDetail);
+// Route to get order data  with 'delivered' status
+router.get('/history/:id', userMiddleware.userAuthorization('user'), orderController.getOrderHistory); //userId
 
 module.exports = router;

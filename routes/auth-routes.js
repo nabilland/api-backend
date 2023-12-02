@@ -10,11 +10,13 @@ const collectorController = require('../controllers/collector-controller.js');
 const orderController = require('../controllers/order-controller.js');
 const contentController = require('../controllers/content-controller.js');
 
-// Route to register
-router.post('/register', userMiddleware.validateRegister, authController.registerUser);
+// Route to register user
+router.post('/register-user', userMiddleware.validateRegister, authController.registerUser);
+// Route to register collector
+router.post('/register-collector', userMiddleware.validateRegister, authController.registerCollector);
 // Route to log in
 router.post('/login', authController.loginUser);
 // Route to log out
-router.post('/logout', authController.logoutUser);
+router.post('/logout', userMiddleware.isLoggedIn, authController.logoutUser);
 
 module.exports = router;
