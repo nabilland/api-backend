@@ -15,7 +15,7 @@ module.exports = {
         const { waste_type, waste_qty, user_notes, recycle_fee, pickup_fee, pickup_latitude, pickup_longitude } = req.body;
         const order_status = 'pick_up';
         const subtotal_fee = Number(pickup_fee) + Number(recycle_fee);
-        const insertQuery = `INSERT INTO orders (user_id, waste_type, waste_qty, user_notes, recycle_fee, pickup_fee, subtotal_fee, order_status, order_datetime, pickup_latitude, pickup_longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, now(), ?, ?)`;
+        const insertQuery = `INSERT INTO orders (user_id, waste_type, waste_qty, user_notes, recycle_fee, pickup_fee, subtotal_fee, order_status, order_datetime, pickup_datetime, pickup_latitude, pickup_longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, now(), now(), ?, ?)`;
         db.query(insertQuery, [userId, waste_type, waste_qty, user_notes, recycle_fee, pickup_fee, subtotal_fee, order_status, pickup_latitude, pickup_longitude], (error) => {
             if (error) {
                 console.error('Error inserting order:', error);

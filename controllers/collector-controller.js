@@ -176,6 +176,8 @@ module.exports = {
                 name: collector.name,
                 drop_latitude: collector.drop_latitude,
                 drop_longitude: collector.drop_longitude,
+                current_latitude: collector.drop_latitude,
+                current_longitude: collector.drop_longitude,
             }));
             res.status(200).json(allCollectorsData);
         });

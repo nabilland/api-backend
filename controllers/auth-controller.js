@@ -34,7 +34,7 @@ module.exports = {
                             });
                         } else {
                             db.query(
-                                'INSERT INTO users (id, username, email, password, phone, role, name, registered) VALUES (?, ?, ?, ?, ?, ?, ?, now());',
+                                'INSERT INTO users (id, username, email, password, phone, role, name, registered, last_login, last_logout) VALUES (?, ?, ?, ?, ?, ?, ?, now(), now(), now());',
                                 [uuid.v4(), req.body.username, req.body.email, hash, req.body.phone, role, req.body.name],
                                 (err, result) => {
                                     if (err) {
@@ -79,15 +79,32 @@ module.exports = {
                                 message: err,
                             });
                         } else {
+                            const newUserId = uuid.v4();
                             db.query(
-                                'INSERT INTO users (id, username, email, password, phone, role, name, registered) VALUES (?, ?, ?, ?, ?, ?, ?, now());',
-                                [uuid.v4(), req.body.username, req.body.email, hash, req.body.phone, role, req.body.name],
+                                'INSERT INTO users (id, username, email, password, phone, role, name, registered, last_login, last_logout) VALUES (?, ?, ?, ?, ?, ?, ?, now(), now(), now());',
+                                [newUserId, req.body.username, req.body.email, hash, req.body.phone, role, req.body.name],
                                 (err, result) => {
                                     if (err) {
                                         return res.status(400).send({
                                             message: err,
                                         });
                                     }
+
+                                    db.query(
+                                        'INSERT INTO collectors (user_id, current_latitude, current_longitude, drop_latitude, drop_longitude) VALUES (?, ?, ?, ?, ?)',
+                                        [newUserId, 0, 0, 0, 0],
+                                        (orderErr, orderResult) => {
+                                            if (orderErr) {
+                                                return res.status(400).send({
+                                                    message: orderErr,
+                                                });
+                                            }
+                                            return res.status(201).send({
+                                                message: 'Registered and order placed!',
+                                            });
+                                        }
+                                    );
+
                                     return res.status(201).send({
                                         message: 'Registered!',
                                     });
