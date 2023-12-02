@@ -45,6 +45,13 @@ module.exports = {
 
     getContentById: (req, res) => {
         const contentId = req.params.id;
+
+        if(!contentId){
+            return res.status(400).json({
+                error: 'Bad request: Missing content ID',
+            });
+        }
+
         const getAllContentQuery = `SELECT * FROM contents where id = ?`;
         
         db.query(getAllContentQuery, [contentId], (error, results) => {
@@ -70,6 +77,13 @@ module.exports = {
 
     updateContentById: (req, res) => {
         const contentId = req.params.id
+
+        if(!contentId){
+            return res.status(400).json({
+                error: 'Bad request: Missing content ID',
+            });
+        }
+        
         const { content_title, content_text } = req.body;
         
         const updateQuery = `UPDATE contents SET content_title = ?, content_text = ? WHERE id = ?`;
@@ -89,6 +103,12 @@ module.exports = {
 
     deleteContentById: (req, res) => {
         const contentId = req.params.id;
+
+        if(!contentId){
+            return res.status(400).json({
+                error: 'Bad request: Missing content ID',
+            });
+        }
 
         const deleteQuery = `DELETE FROM contents WHERE id = ?`;
 

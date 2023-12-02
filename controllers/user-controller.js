@@ -6,7 +6,14 @@ module.exports = {
     getUserProfileById: (req, res) => {
         const  userId  = req.params.id;
     
+        if(!userId){
+            return res.status(400).json({
+                error: 'Bad request: Missing user ID',
+            });
+        }
+
         const selectQuery = `SELECT * FROM users WHERE id = ?`;
+        
         db.query(selectQuery, [userId], (error, results) => {
             if (error) {
                 console.error('Error retrieving user profile:', error);
@@ -31,6 +38,12 @@ module.exports = {
     updateUserProfile: (req, res) => {
         const userId = req.params.id;
         const { phone, name } = req.body;
+
+        if(!userId){
+            return res.status(400).json({
+                error: 'Bad request: Missing user ID',
+            });
+        }
 
         const updateQuery = `UPDATE users SET phone = ?, name = ? WHERE id = ?`;
 

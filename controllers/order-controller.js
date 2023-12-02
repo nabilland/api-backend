@@ -5,6 +5,13 @@ const db = require('../lib/db.js');
 module.exports = {
     createOrder: (req, res) => {
         const userId = req.params.id;
+
+        if(!userId){
+            return res.status(400).json({
+                error: 'Bad request: Missing user ID',
+            });
+        }
+
         const { waste_type, waste_qty, user_notes, recycle_fee, pickup_fee, pickup_latitude, pickup_longitude } = req.body;
         const order_status = 'pick_up';
         const subtotal_fee = Number(pickup_fee) + Number(recycle_fee);
@@ -24,6 +31,13 @@ module.exports = {
 
     getOrderDetail: (req, res) => {
         const userId = req.params.id;
+
+        if(!userId){
+            return res.status(400).json({
+                error: 'Bad request: Missing user ID',
+            });
+        }
+
         const getUserOrder = `SELECT * FROM orders WHERE user_id = ?`;
             
         db.query(getUserOrder, [userId], (error, results) => {
@@ -93,6 +107,13 @@ module.exports = {
 
     updateOrderStatus: (req, res) => {
         const orderId = req.params.id;
+
+        if(!orderId){
+            return res.status(400).json({
+                error: 'Bad request: Missing order ID',
+            });
+        }
+
         const { order_status } = req.body;
 
         const updateQuery = `UPDATE orders SET order_status = ?, pickup_datetime = now() WHERE id = ?`;
@@ -112,6 +133,13 @@ module.exports = {
 
     getOrderHistory: (req, res) => {
         const userId = req.params.id;
+
+        if(!userId){
+            return res.status(400).json({
+                error: 'Bad request: Missing user ID',
+            });
+        }
+
         const getUserOrder = `SELECT * FROM orders WHERE user_id = ? AND order_status = 'delivered'`;
             
         db.query(getUserOrder, [userId], (error, results) => {

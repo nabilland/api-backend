@@ -6,6 +6,12 @@ module.exports = {
     getCollectorProfile: (req, res) => {
         const userId  = req.params.id;
 
+        if(!userId){
+            return res.status(400).json({
+                error: 'Bad request: Missing user ID',
+            });
+        }
+
         const selectQuery = `SELECT * FROM users WHERE id = ?`;
         
         db.query(selectQuery, [userId], (error, results) => {
@@ -30,6 +36,13 @@ module.exports = {
 
     updateCollectorProfile: (req, res) => {
         const userId = req.params.id;
+
+        if(!userId){
+            return res.status(400).json({
+                error: 'Bad request: Missing user ID',
+            });
+        }
+
         const { phone, name } = req.body;
 
         const updateQuery = `UPDATE users SET phone = ?, name = ? WHERE id = ?`;
@@ -49,6 +62,13 @@ module.exports = {
 
     updateDropLocation: (req, res) => {
         const userId = req.params.id;
+
+        if(!userId){
+            return res.status(400).json({
+                error: 'Bad request: Missing user ID',
+            });
+        }
+
         const { drop_latitude, drop_longitude } = req.body;
 
         // Check if data for the user already exists in collectors table
@@ -94,6 +114,13 @@ module.exports = {
 
     updateCurrentLocation: (req, res) => {
         const userId = req.params.id;
+
+        if(!userId){
+            return res.status(400).json({
+                error: 'Bad request: Missing user ID',
+            });
+        }
+
         const { current_latitude, current_longitude } = req.body;
 
         // Check if data for the user already exists in collectors table
